@@ -357,8 +357,72 @@ ul {
    6. PRODUCTS SECTION
    ========================================= */
 .products {
-    padding: 5rem 0;
+    padding: 6rem 0;
     background: var(--bg-light);
+}
+
+.product-details {
+    padding: 6rem 0;
+    background: var(--bg-white);
+}
+
+.product-detail {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+}
+
+.product-detail:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.product-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.product-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.product-detail-content .section-tag {
+    margin-bottom: 0.75rem;
+}
+
+.product-detail-content h3 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: var(--primary-dark);
+}
+
+.product-detail-content p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.product-detail-content ul {
+    list-style: disc;
+    margin-left: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+}
+
+.product-detail-content ul li {
+    margin-bottom: 0.75rem;
+}
+
+.product-detail-content .btn-secondary {
+    margin: 0;
 }
 
 .section-header {
@@ -559,6 +623,151 @@ ul {
 }
 
 /* =========================================
+   13. SUBMENU PRODUK
+   ========================================= */
+
+/* Nav item wrapper untuk submenu */
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown submenu */
+.submenu {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--bg-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    padding: 0.5rem 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 2000;
+    border-top: 3px solid var(--primary-color);
+}
+
+/* Segitiga kecil di atas submenu */
+.submenu::before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--primary-color);
+}
+
+/* Tampilkan submenu HANYA saat class open (diklik) */
+.has-submenu.open .submenu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Item dalam submenu */
+.submenu li {
+    margin: 0;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.2rem;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.submenu-link img {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.submenu-link span {
+    flex: 1;
+}
+
+.submenu-link:hover {
+    background: var(--bg-light);
+    color: var(--primary-color);
+    padding-left: 1.5rem;
+}
+
+/* Divider antar item */
+.submenu li:not(:last-child) .submenu-link {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ---- MOBILE: submenu di dalam mobile menu ---- */
+@media (max-width: 768px) {
+    .nav-item {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .nav-item .nav-link {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .submenu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border-top: none;
+        border-radius: 0;
+        min-width: 100%;
+        width: 100%;
+        background: var(--bg-light);
+        padding: 0;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+    }
+
+    .submenu::before {
+        display: none;
+    }
+
+    .has-submenu.open .submenu {
+        max-height: 400px;
+        transform: none;
+    }
+
+    .submenu-link {
+        padding: 0.7rem 1.5rem;
+        justify-content: center;
+    }
+
+    .submenu-link:hover {
+        padding-left: 1.5rem;
+    }
+}
+
+/* =========================================
    10. ANIMATIONS & UTILITIES
    ========================================= */
 .fade-in {
@@ -586,6 +795,10 @@ ul {
     
     .footer-grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .product-detail-grid {
+        grid-template-columns: 1fr;
     }
 }
 

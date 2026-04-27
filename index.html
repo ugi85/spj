@@ -30,7 +30,31 @@
             <nav class="nav-menu">
                 <a href="#home" class="nav-link">Home</a>
                 <a href="#about" class="nav-link">About</a>
-                <a href="#products" class="nav-link">Products</a>
+
+                <!-- Products dengan Submenu -->
+                <div class="nav-item has-submenu">
+                    <a href="#products" class="nav-link" aria-expanded="false">
+                        Products
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="cocoa.html" class="submenu-link">
+                                <span>Cocoa Powder</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="vanilla.html" class="submenu-link">
+                                <span>Vanilla</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="palm.html" class="submenu-link">
+                                <span>Palm Kernel</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
             
@@ -46,19 +70,19 @@
     </header>
 
     <!-- ================= HERO SECTION ================= -->
-    <section id="home" class="hero">
-        <div class="container hero-content">
-            <h1 class="hero-title">SUNTARA INDONESIA</h1>
-            <p class="hero-subtitle">No. 1 Cocoa Manufacturer From Indonesia</p>
-            <a href="#about" class="btn-primary">
-                Get To Know More Cocoa Manufacturer From Indonesia
-                <span class="arrow">▼</span>
-            </a>
-        </div>
-    </section>
+            <section id="home" class="hero fade-in">
+                <div class="container hero-content">
+                    <h1 class="hero-title">SUNTARA INDONESIA</h1>
+                    <p class="hero-subtitle">No. 1 Cocoa Manufacturer From Indonesia</p>
+                    <a href="#about" class="btn-primary">
+                        Get To Know More Cocoa Manufacturer From Indonesia
+                        <span class="arrow">▼</span>
+                    </a>
+                </div>
+            </section>
 
     <!-- ================= STATISTICS SECTION ================= -->
-    <section class="statistics">
+    <section class="statistics fade-in">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item">
@@ -78,7 +102,7 @@
     </section>
 
     <!-- ================= ABOUT SECTION ================= -->
-    <section id="about" class="about">
+    <section id="about" class="about fade-in">
         <div class="container">
             <div class="about-grid">
                 <div class="about-image">
@@ -96,48 +120,43 @@
     </section>
 
     <!-- ================= PRODUCTS SECTION ================= -->
-    <section id="products" class="products">
+    <section id="products" class="products fade-in">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Our Authentic Products</h2>
+                <p>Explore our core product categories and visit dedicated pages for detailed specifications and packaging options.</p>
             </div>
             <div class="products-grid">
-                <!-- Product 1 -->
-                <article class="product-card">
+                <article class="product-card fade-in">
                     <div class="product-image">
-                        <img src="assets/images/3.JPG" alt="Alkalized Cocoa Powder High Fat" loading="lazy" width="400" height="300">
+                        <img src="assets/images/3.JPG" alt="Cocoa Powder" loading="lazy" width="400" height="300">
                     </div>
                     <h3>Cocoa Powder</h3>
-                    <p>Premium high-fat cocoa powder ideal for confectionery, baking, and premium beverage applications with rich flavor and consistent quality.</p>
-                    <a href="#contact" class="btn-secondary">Get To Know More</a>
+                    <p>Natural and alkalized cocoa powder for premium confectionery, bakery, and beverage manufacturing.</p>
+                    <a href="cocoa.html" class="btn-secondary">View Cocoa Products</a>
                 </article>
-
-                <!-- Product 2 -->
-                <article class="product-card">
+                <article class="product-card fade-in">
                     <div class="product-image">
-                        <img src="assets/images/2.JPG" alt="Alkalized Cocoa Powder Low Fat" loading="lazy" width="400" height="300">
+                        <img src="assets/images/2.JPG" alt="Vanilla" loading="lazy" width="400" height="300">
                     </div>
                     <h3>Vanilla</h3>
-                    <p>Vanilla extract is a natural flavoring agent derived from the seeds of the vanilla plant (Vanilla planifolia).</p>
-                    <a href="#contact" class="btn-secondary">Get To Know More</a>
+                    <p>High-grade vanilla extract, powder, bean, and paste options for food and beverage producers.</p>
+                    <a href="vanilla.html" class="btn-secondary">View Vanilla Products</a>
                 </article>
-
-                 <!-- Product 3 -->
-                <article class="product-card">
+                <article class="product-card fade-in">
                     <div class="product-image">
-                        <img src="assets/images/4.JPG" alt="Alkalized Cocoa Powder Low Fat" loading="lazy" width="400" height="300">
+                        <img src="assets/images/4.JPG" alt="Palm Kernel" loading="lazy" width="400" height="300">
                     </div>
-                    <h3>Palm kernel </h3>
-                    <p>Lightweight yet flavorful low-fat cocoa powder perfect for dairy products, health-focused formulas, and everyday food manufacturing.</p>
-                    <a href="#contact" class="btn-secondary">Get To Know More</a>
+                    <h3>Palm Kernel</h3>
+                    <p>Reliable palm kernel ingredient with stable fat profile for coatings, fillings, and industrial applications.</p>
+                    <a href="palm.html" class="btn-secondary">View Palm Kernel</a>
                 </article>
             </div>
         </div>
     </section>
-    
 
     <!-- ================= DIFFERENTIATORS SECTION ================= -->
-    <section class="differentiators">
+    <section class="differentiators fade-in">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">What Makes Us Different</h2>
@@ -178,7 +197,7 @@
     </section>
 
     <!-- ================= CTA SECTION ================= -->
-    <section class="cta">
+    <section class="cta fade-in">
         <div class="container">
             <h2>Start Collaboration With Suntara Indonesia</h2>
             <p>#1 Cocoa Manufacturer From Indonesia</p>
@@ -187,12 +206,12 @@
     </section>
 
     <!-- ================= LOCATION / MAP SECTION ================= -->
-<section id="contact" class="location">
-    <div class="container">
-        <div class="section-header">
-            <p class="section-tag">Visit Us</p>
-            <h2 class="section-title">Our Location</h2>
-        </div>
+ <section id="contact" class="location fade-in">
+     <div class="container">
+         <div class="section-header">
+             <p class="section-tag">Visit Us</p>
+             <h2 class="section-title">Our Location</h2>
+         </div>
         
         <div class="location-grid">
             <!-- Address Info -->
@@ -266,13 +285,14 @@
 </section>
 
     <!-- ================= FOOTER / CONTACT ================= -->
-    <footer id="footer" class="footer">
-        <div class="container">
-            <div class="footer-grid">
+     <footer id="footer" class="footer fade-in">
+         <div class="container">
+             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>About Company</h4>
-                    <p>PT Suntara Perintis Jaya 
-                        <br>We supplies premium quality cocoa powder to clients worldwide, focusing on sustainability, quality, and reliability.</p>
+                    <strong>PT SUNTARA PERINTIS JAYA</strong>
+                    <p>We supplies premium quality cocoa powder to clients worldwide, 
+                        <br> focusing on sustainability, quality, and reliability.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Quick Links</h4>

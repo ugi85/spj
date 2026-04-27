@@ -49,46 +49,53 @@ document.addEventListener('DOMContentLoaded', function () {
             const targetId = this.getAttribute('href');
             if (!targetId || targetId === '#') return;
 
+            if (targetId === '#products' && this.closest('.has-submenu')) {
+                // Open products submenu only; do not scroll
+                return;
+            }
+ 
             const targetElement = document.querySelector(targetId);
             if (!targetElement) return;
-
+ 
             e.preventDefault();
-
+ 
             const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
             const offsetTop = Math.max(targetTop - getHeaderHeight() - 8, 0);
-
+ 
             smoothScrollTo(offsetTop, 1000);
-
+ 
             if (navMenu) navMenu.classList.remove('active');
             if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-
-            if (window.location.hash !== targetId) {
-                history.pushState(null, '', targetId);
-            }
-        });
-    });
-
-    // ====================
-    // 3. MOBILE MENU TOGGLE
-    // ====================
+ 
+             if (window.location.hash !== targetId) {
+                 history.pushState(null, '', targetId);
+             }
+         });
+     });
+ 
+     // ====================
+     // 3. MOBILE MENU TOGGLE
+     // ====================
     if (hamburgerBtn && navMenu) {
-        hamburgerBtn.addEventListener('click', function () {
-            this.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Tutup menu saat klik di luar
-        document.addEventListener('click', function (e) {
-            if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                navMenu.classList.remove('active');
-                hamburgerBtn.classList.remove('active');
-            }
-        });
-    }
-
-    // ====================
-    // 4. NAVBAR SCROLL EFFECT
-    // ====================
+             hamburgerBtn.addEventListener('click', function () {
+                 const isActive = this.classList.toggle('active');
+                 navMenu.classList.toggle('active');
+                 this.setAttribute('aria-expanded', isActive);
+             });
+ 
+             // Tutup menu saat klik di luar
+             document.addEventListener('click', function (e) {
+                 if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                     navMenu.classList.remove('active');
+                     hamburgerBtn.classList.remove('active');
+                     hamburgerBtn.setAttribute('aria-expanded', 'false');
+                 }
+             });
+         }
+ 
+     // ====================
+     // 4. NAVBAR SCROLL EFFECT
+     // ====================
     if (navbar) {
         window.addEventListener('scroll', function () {
             if (window.scrollY > 50) {
@@ -123,55 +130,140 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. COUNTER ANIMATION
     // ====================
     const statsSection = document.querySelector('.statistics');
-    const statNumbers = document.querySelectorAll('.stat-number');
-    let statsAnimated = false;
-
-    if (statsSection && statNumbers.length > 0 && 'IntersectionObserver' in window) {
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !statsAnimated) {
-                    animateCounters();
-                    statsAnimated = true;
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        statsObserver.observe(statsSection);
-    }
-
-    function animateCounters() {
-        statNumbers.forEach(stat => {
-            const finalText = stat.innerText;
-            const numericValue = parseInt(finalText.replace(/\D/g, ''));
-            const suffix = finalText.replace(/[0-9]/g, '');
-            const duration = 2000;
-            const frameRate = 60;
-            const totalFrames = duration / (1000 / frameRate);
-            let currentFrame = 0;
-
-            const timer = setInterval(() => {
-                currentFrame++;
-                const progress = currentFrame / totalFrames;
-                const easeProgress = 1 - Math.pow(1 - progress, 2);
-                const currentValue = Math.floor(easeProgress * numericValue);
-                
-                stat.innerText = currentValue + suffix;
-
-                if (currentFrame >= totalFrames) {
-                    stat.innerText = finalText;
-                    clearInterval(timer);
-                }
-            }, 1000 / frameRate);
-        });
-    }
-
-    // ====================
-    // 7. DYNAMIC FOOTER YEAR
-    // ====================
+     const statNumbers = document.querySelectorAll('.stat-number');
+     let statsAnimated = false;
+ 
+     if (statsSection && statNumbers.length > 0 && 'IntersectionObserver' in window) {
+         const statsObserver = new IntersectionObserver((entries) => {
+             entries.forEach(entry => {
+                 if (entry.isIntersecting && !statsAnimated) {
+                     animateCounters();
+                     statsAnimated = true;
+                     statsObserver.unobserve(entry.target);
+                 }
+             });
+         }, { threshold: 0.5 });
+ 
+         statsObserver.observe(statsSection);
+     }
+ 
+     function animateCounters() {
+         statNumbers.forEach(stat => {
+             const finalText = stat.innerText;
+             const numericValue = parseInt(finalText.replace(/\D/g, ''));
+             const suffix = finalText.replace(/[0-9]/g, '');
+             const duration = 2000;
+             const frameRate = 60;
+             const totalFrames = duration / (1000 / frameRate);
+             let currentFrame = 0;
+ 
+             const timer = setInterval(() => {
+                 currentFrame++;
+                 const progress = currentFrame / totalFrames;
+                 const easeProgress = 1 - Math.pow(1 - progress, 2);
+                 const currentValue = Math.floor(easeProgress * numericValue);
+                 
+                 stat.innerText = currentValue + suffix;
+ 
+                 if (currentFrame >= totalFrames) {
+                     stat.innerText = finalText;
+                     clearInterval(timer);
+                 }
+             }, 1000 / frameRate);
+         });
+     }
+ 
+     // ====================
+     // 8. SCROLLSPY ACTIVE NAV LINK
+     // ====================
+     const navLinksAll = document.querySelectorAll('.nav-link[href^="#"], .submenu-link[href^="#"]');
+     const scrollTargets = Array.from(navLinksAll).reduce((acc, link) => {
+         const targetId = link.getAttribute('href');
+         const targetElement = document.querySelector(targetId);
+         if (targetElement && !acc.some(item => item.id === targetElement.id)) {
+             acc.push(targetElement);
+         }
+         return acc;
+     }, []);
+ 
+     function updateActiveNav() {
+         const currentPosition = window.pageYOffset + getHeaderHeight() + 16;
+         let activeId = '#home';
+ 
+         scrollTargets.forEach(target => {
+             if (currentPosition >= target.offsetTop) {
+                 activeId = `#${target.id}`;
+             }
+         });
+ 
+         navLinksAll.forEach(link => {
+             const href = link.getAttribute('href');
+             if (href === activeId) {
+                 link.classList.add('active');
+             } else {
+                 link.classList.remove('active');
+             }
+         });
+     }
+ 
+     updateActiveNav();
+     window.addEventListener('scroll', updateActiveNav);
+ 
+     // ====================
+     // 7. DYNAMIC FOOTER YEAR
+     // ====================
     const yearSpan = document.getElementById('current-year');
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
+
+    // ====================
+    // 8. SUBMENU PRODUK
+    // ====================
+    const submenuParents = document.querySelectorAll('.has-submenu');
+
+    submenuParents.forEach(function (item) {
+        const link = item.querySelector('.nav-link');
+        const submenu = item.querySelector('.submenu');
+
+        // --- MOBILE: toggle buka/tutup submenu saat klik ---
+                 if (link && submenu) {
+                     link.addEventListener('click', function (e) {
+                         e.preventDefault();
+                         const isOpen = item.classList.contains('open');
+ 
+                         // Tutup semua submenu lain
+                         submenuParents.forEach(function (other) {
+                             if (other !== item) {
+                                 other.classList.remove('open');
+                                 const otherLink = other.querySelector('.nav-link');
+                                 if (otherLink) otherLink.setAttribute('aria-expanded', 'false');
+                             }
+                         });
+ 
+                         // Toggle submenu ini
+                         item.classList.toggle('open', !isOpen);
+                         link.setAttribute('aria-expanded', String(!isOpen));
+                     });
+                 }
+ 
+                 // --- DESKTOP: tutup submenu saat klik di luar area ---
+                 document.addEventListener('click', function (e) {
+                     if (!item.contains(e.target)) {
+                         item.classList.remove('open');
+                     }
+                 });
+ 
+                 // --- Klik item submenu: tutup mobile menu & submenu ---
+                 const submenuLinks = item.querySelectorAll('.submenu-link');
+                 submenuLinks.forEach(function (subLink) {
+                     subLink.addEventListener('click', function () {
+                         item.classList.remove('open');
+                         if (navMenu) navMenu.classList.remove('active');
+                         if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+                         if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+                     });
+                 });
+             });
 
 });
