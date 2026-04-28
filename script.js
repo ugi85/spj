@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const hamburgerBtn = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const getHeaderHeight = () => navbar ? navbar.offsetHeight : 80;
+    const isMobile = () => window.innerWidth <= 768;
 
     // ====================
     // 2. CUSTOM SMOOTH SCROLL
-    // Dibuat manual agar efek scroll benar-benar terasa saat menu diklik.
     // ====================
     const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
 
@@ -49,9 +49,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const targetId = this.getAttribute('href');
             if (!targetId || targetId === '#') return;
 
+            // Jika klik "Products" yang punya submenu
             if (targetId === '#products' && this.closest('.has-submenu')) {
-                // Open products submenu only; do not scroll
-                return;
+                const item = this.closest('.has-submenu');
+                
+                // Di mobile: buka submenu jika belum terbuka
+                if (isMobile() && !item.classList.contains('open')) {
+                    e.preventDefault();
+                    
+                    // Tutup submenu lain
+                    document.querySelectorAll('.has-submenu').forEach(other => {
+                        if (other !== item) {
+                            other.classList.remove('open');
+                            other.querySelector('.nav-link')?.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    
+                    // Buka submenu ini
+                    item.classList.add('open');
+                    this.setAttribute('aria-expanded', 'true');
+                    return; // Stop di sini
+                }
+                // Jika desktop atau sudah terbuka, lanjut ke smooth scroll
             }
  
             const targetElement = document.querySelector(targetId);
@@ -174,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
      }
  
      // ====================
-     // 8. SCROLLSPY ACTIVE NAV LINK
+     // 7. SCROLLSPY ACTIVE NAV LINK
      // ====================
      const navLinksAll = document.querySelectorAll('.nav-link[href^="#"], .submenu-link[href^="#"]');
      const scrollTargets = Array.from(navLinksAll).reduce((acc, link) => {
@@ -210,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
      window.addEventListener('scroll', updateActiveNav);
  
      // ====================
-     // 7. DYNAMIC FOOTER YEAR
+     // 8. DYNAMIC FOOTER YEAR
      // ====================
     const yearSpan = document.getElementById('current-year');
     if (yearSpan) {
@@ -218,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ====================
-    // 8. SUBMENU PRODUK
+    // 9. SUBMENU PRODUK (FIXED)
     // ====================
     const submenuParents = document.querySelectorAll('.has-submenu');
 
@@ -226,44 +245,62 @@ document.addEventListener('DOMContentLoaded', function () {
         const link = item.querySelector('.nav-link');
         const submenu = item.querySelector('.submenu');
 
-        // --- MOBILE: toggle buka/tutup submenu saat klik ---
-                 if (link && submenu) {
-                     link.addEventListener('click', function (e) {
-                         e.preventDefault();
-                         const isOpen = item.classList.contains('open');
- 
-                         // Tutup semua submenu lain
-                         submenuParents.forEach(function (other) {
-                             if (other !== item) {
-                                 other.classList.remove('open');
-                                 const otherLink = other.querySelector('.nav-link');
-                                 if (otherLink) otherLink.setAttribute('aria-expanded', 'false');
-                             }
-                         });
- 
-                         // Toggle submenu ini
-                         item.classList.toggle('open', !isOpen);
-                         link.setAttribute('aria-expanded', String(!isOpen));
-                     });
-                 }
- 
-                 // --- DESKTOP: tutup submenu saat klik di luar area ---
-                 document.addEventListener('click', function (e) {
-                     if (!item.contains(e.target)) {
-                         item.classList.remove('open');
-                     }
-                 });
- 
-                 // --- Klik item submenu: tutup mobile menu & submenu ---
-                 const submenuLinks = item.querySelectorAll('.submenu-link');
-                 submenuLinks.forEach(function (subLink) {
-                     subLink.addEventListener('click', function () {
-                         item.classList.remove('open');
-                         if (navMenu) navMenu.classList.remove('active');
-                         if (hamburgerBtn) hamburgerBtn.classList.remove('active');
-                         if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
-                     });
-                 });
-             });
+        if (link && submenu) {
+            link.addEventListener('click', function (e) {
+                // Hanya intercept di mobile
+                if (isMobile()) {
+                    const isOpen = item.classList.contains('open');
+                    
+                    // Jika submenu BELUM terbuka: cegah navigasi, buka submenu
+                    if (!isOpen) {
+                        e.preventDefault();
+                        
+                        // Tutup submenu lain (accordion style)
+                        submenuParents.forEach(function (other) {
+                            if (other !== item) {
+                                other.classList.remove('open');
+                                other.querySelector('.nav-link')?.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+
+                        // Buka submenu ini
+                        item.classList.add('open');
+                        link.setAttribute('aria-expanded', 'true');
+                        return; // Stop event, jangan navigasi
+                    }
+                    // Jika sudah terbuka: biarkan event lanjut (navigasi ke #products)
+                }
+            });
+        }
+
+        // Tutup submenu saat klik di luar (untuk cleanup)
+        document.addEventListener('click', function (e) {
+            if (!item.contains(e.target) && isMobile()) {
+                item.classList.remove('open');
+                link?.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Saat item submenu diklik: tutup semua & biarkan navigasi bekerja
+        const submenuLinks = item.querySelectorAll('.submenu-link');
+        submenuLinks.forEach(function (subLink) {
+            subLink.addEventListener('click', function () {
+                submenuParents.forEach(other => other.classList.remove('open'));
+                if (navMenu) navMenu.classList.remove('active');
+                if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+                hamburgerBtn?.setAttribute('aria-expanded', 'false');
+            });
+        });
+    });
+
+    // Reset state saat resize (mobile -> desktop)
+    window.addEventListener('resize', function() {
+        if (!isMobile()) {
+            submenuParents.forEach(item => {
+                item.classList.remove('open');
+                item.querySelector('.nav-link')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
 
 });
