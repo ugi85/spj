@@ -122,9 +122,15 @@ ul { list-style: none; }
    4. MAIN SECTIONS (HERO, STATS, ABOUT, PRODUCTS GRID)
    ========================================= */
 .hero {
-    margin-top: var(--header-height); min-height: calc(100vh - var(--header-height));
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    color: var(--bg-white); position: relative; overflow: hidden;
+    margin-top: var(--header-height); 
+    min-height: calc(100vh - var(--header-height));
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    color: var(--bg-white); 
+    position: relative; 
+    overflow: hidden;
     background: linear-gradient(135deg, rgba(74, 46, 23, 0.88) 0%, rgba(107, 68, 35, 0.82) 45%, rgba(139, 105, 20, 0.76) 100%),
     url('assets/images/hero-bg.jpg') center/cover no-repeat fixed;
 }
@@ -140,9 +146,42 @@ ul { list-style: none; }
     background: linear-gradient(120deg, rgba(255,255,255,0.06), transparent 35%),
     linear-gradient(300deg, rgba(232,196,160,0.10), transparent 40%); opacity: 0.8; z-index: 0;
 }
-.hero-content { max-width: 800px; padding: 2rem; position: relative; z-index: 1; }
-.hero-title { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: 1px; margin-bottom: 1rem; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-.hero-subtitle { font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 400; margin-bottom: 2.5rem; opacity: 0.9; }
+.hero-content { 
+    max-width: 800px; 
+    padding: 2rem; 
+    position: relative; 
+    z-index: 1; 
+    /* ✅ FIX: Kunci posisi vertikal agar tidak bergeser saat zoom/resize */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Mengisi penuh tinggi parent .hero */
+    box-sizing: border-box;
+}
+.hero-title { 
+    font-size: clamp(2.5rem, 5vw, 4.5rem); 
+    font-weight: 600; 
+    letter-spacing: 1px; 
+    margin-bottom: 1rem; 
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+    /* ✅ FIX: Stabilkan baris & lebar agar tidak lompat saat teks wrap */
+    line-height: 1.15;
+    text-align: center;
+    width: 150%;
+    /* ✅ Pusatkan vertikal di dalam flex container */
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.hero-subtitle { 
+    font-size: clamp(1.1rem, 2vw, 1.6rem); 
+    font-weight: 400; 
+    margin-bottom: 2.5rem; 
+    opacity: 0.9; 
+    text-align: center;
+    width: 100%;
+}
 .btn-primary {
     display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: var(--bg-white);
     padding: 1rem 2rem; border: 2px solid var(--bg-white); border-radius: 50px; font-weight: 600; font-size: 1rem;
