@@ -231,7 +231,13 @@ ul { list-style: none; }
 .diff-item:hover h3, .diff-item:hover p { color: var(--bg-white); }
 .diff-item p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 .cta { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); padding: 5rem 0; text-align: center; color: var(--bg-white); }
-.cta h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 0.8rem; }
+.cta h2 {
+    font-size: clamp(1.2rem, 4vw, 2.5rem);
+    white-space: nowrap; /* Paksa 1 baris */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Tambah ... jika terlalu panjang */
+    padding: 0 1rem;
+}
 .cta p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
 .footer { background: var(--primary-dark); color: var(--bg-white); padding: 4rem 0 2rem; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
@@ -503,6 +509,11 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         word-wrap: break-word;
         text-align: center;
         max-width: 90%;
+    }
+
+     .cta h2 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem); /* Lebih kecil lagi */
+        letter-spacing: -0.5px; /* Rapatkan huruf */
     }
 }
 
