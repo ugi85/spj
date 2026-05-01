@@ -133,6 +133,9 @@ ul { list-style: none; }
     overflow: hidden;
     background: linear-gradient(135deg, rgba(74, 46, 23, 0.88) 0%, rgba(107, 68, 35, 0.82) 45%, rgba(139, 105, 20, 0.76) 100%),
     url('assets/images/hero-bg.jpg') center/cover no-repeat fixed;
+    /* ✅ Pastikan ada padding di semua sisi */
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
 .hero::before, .hero::after {
     content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: screen;
@@ -148,39 +151,42 @@ ul { list-style: none; }
 }
 .hero-content { 
     max-width: 800px; 
-    padding: 2rem; 
+    padding: 2rem 1.5rem; 
     position: relative; 
     z-index: 1; 
-    /* ✅ FIX: Kunci posisi vertikal agar tidak bergeser saat zoom/resize */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Mengisi penuh tinggi parent .hero */
+    width: 100%;
     box-sizing: border-box;
 }
 .hero-title { 
-    font-size: clamp(2.5rem, 5vw, 4.5rem); 
+    font-size: clamp(1.8rem, 5vw, 4.5rem); /* ✅ Lebih kecil di mobile */
     font-weight: 600; 
-    letter-spacing: 1px; 
+    letter-spacing: 0.5px; /* ✅ Kurangi letter spacing di mobile */
     margin-bottom: 1rem; 
     text-shadow: 0 2px 8px rgba(0,0,0,0.2); 
-    /* ✅ FIX: Stabilkan baris & lebar agar tidak lompat saat teks wrap */
-    line-height: 1.15;
+    line-height: 1.2;
     text-align: center;
-    width: 150%;
-    /* ✅ Pusatkan vertikal di dalam flex container */
-    margin-top: auto;
-    margin-bottom: auto;
+    width: 100%;
+    /* ✅ Pastikan tidak overflow */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    padding: 0 0.5rem; /* ✅ Beri ruang di sisi kiri-kanan */
+    box-sizing: border-box;
 }
-
 .hero-subtitle { 
-    font-size: clamp(1.1rem, 2vw, 1.6rem); 
+    font-size: clamp(0.9rem, 2.5vw, 1.6rem); /* ✅ Lebih kecil di mobile */
     font-weight: 400; 
     margin-bottom: 2.5rem; 
     opacity: 0.9; 
     text-align: center;
     width: 100%;
+    padding: 0 1rem; /* ✅ Beri ruang */
+    box-sizing: border-box;
+    line-height: 1.4;
 }
 .btn-primary {
     display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: var(--bg-white);
@@ -451,5 +457,67 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 @media (max-width: 768px) {
     .mobile-company-info {
         display: block;
+    }
+}
+
+/* =========================================
+   MOBILE SPECIFIC FIXES
+   ========================================= */
+@media (max-width: 768px) {
+    .hero {
+        padding: 0;
+        min-height: calc(100vh - var(--header-height));
+        /* ✅ Pastikan background tidak terpotong */
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .hero-content {
+        padding: 1.5rem 1.25rem;
+        align-items: center;
+    }
+    
+    .hero-title {
+        /* ✅ Font lebih kecil untuk judul panjang */
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        letter-spacing: 0;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
+        /* ✅ Izinkan wrap ke 2-3 baris jika perlu */
+        white-space: normal;
+        word-break: normal;
+    }
+    
+    .hero-subtitle {
+        font-size: clamp(0.85rem, 3vw, 1.1rem);
+        line-height: 1.4;
+        margin-bottom: 2rem;
+        padding: 0 0.5rem;
+    }
+    
+    /* ✅ Tombol juga perlu responsif */
+    .btn-primary {
+        font-size: 0.9rem;
+        padding: 0.9rem 1.5rem;
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: center;
+        max-width: 90%;
+    }
+}
+
+/* ✅ Untuk layar sangat kecil (iPhone SE, dll) */
+@media (max-width: 375px) {
+    .hero-title {
+        font-size: clamp(1.3rem, 7vw, 2rem);
+        letter-spacing: 0;
+    }
+    
+    .hero-subtitle {
+        font-size: clamp(0.8rem, 3.5vw, 1rem);
+    }
+    
+    .hero-content {
+        padding: 1rem;
     }
 }
